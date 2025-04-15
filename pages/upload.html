@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一键出片 - 上传视频</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="status-bar">
+        <span>9:41</span>
+        <div>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <i class="fas fa-arrow-left text-xl mr-4"></i>
+            <h1 class="text-2xl font-bold">上传视频</h1>
+        </div>
+
+        <div class="upload-area">
+            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+            <h3 class="text-lg font-semibold mb-2">点击上传视频</h3>
+            <p class="text-sm text-gray-600 mb-4">支持MP4、MOV等格式，最大500MB</p>
+            <button class="btn-primary">选择视频</button>
+        </div>
+
+        <div class="card mt-6">
+            <h3 class="font-semibold mb-4">最近上传</h3>
+            <div class="flex items-center mb-4">
+                <div class="w-16 h-16 bg-gray-200 rounded-lg mr-4"></div>
+                <div>
+                    <h4 class="font-medium">示例视频.mp4</h4>
+                    <p class="text-sm text-gray-600">2023-12-01 上传</p>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <div class="w-16 h-16 bg-gray-200 rounded-lg mr-4"></div>
+                <div>
+                    <h4 class="font-medium">测试视频.mp4</h4>
+                    <p class="text-sm text-gray-600">2023-11-30 上传</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-bar">
+        <div class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-history"></i>
+            <span>历史</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </div>
+    </div>
+</body>
+</html> 

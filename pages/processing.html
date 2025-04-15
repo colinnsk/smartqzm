@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频处理 - 一键出片</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #f5f5f7;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+        .upload-area {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 2px dashed #ddd;
+            position: relative;
+        }
+        .upload-icon {
+            font-size: 48px;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .upload-tip {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4CAF50;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .upload-tip i {
+            margin-right: 4px;
+        }
+        .video-list {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .video-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+        .video-item:last-child {
+            border-bottom: none;
+        }
+        .video-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .video-thumbnail {
+            width: 80px;
+            height: 60px;
+            background: #ddd;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+        .video-info {
+            flex: 1;
+        }
+        .video-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .video-size {
+            color: #666;
+            font-size: 14px;
+        }
+        .delete-btn {
+            color: #ff4444;
+            padding: 5px 10px;
+        }
+        .video-options {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .option-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .option-tag.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .start-btn {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .start-btn.disabled {
+            background: #e0e0e0;
+            color: #9e9e9e;
+            cursor: not-allowed;
+        }
+        .batch-tip {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .batch-tip i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto">
+        <!-- 顶部导航 -->
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center">
+                <i class="fas fa-arrow-left text-gray-600 mr-4"></i>
+                <h1 class="text-xl font-bold">视频处理</h1>
+            </div>
+        </div>
+
+        <!-- 批量处理提示 -->
+        <div class="batch-tip">
+            <i class="fas fa-info-circle"></i>
+            <span>支持批量上传多个视频，每个视频可单独选择处理方式</span>
+        </div>
+
+        <!-- 上传区域 -->
+        <div class="upload-area">
+            <div class="upload-tip">
+                <i class="fas fa-plus"></i>
+                <span>支持多选</span>
+            </div>
+            <div class="upload-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <div class="text-lg font-bold mb-2">拖拽视频到此处上传</div>
+            <div class="text-gray-500 mb-4">或</div>
+            <button class="bg-green-500 text-white px-6 py-2 rounded-lg">选择视频</button>
+        </div>
+
+        <!-- 视频列表 -->
+        <div class="video-list">
+            <div class="video-item">
+                <div class="video-header">
+                    <div class="video-thumbnail"></div>
+                    <div class="video-info">
+                        <div class="video-name">视频1.mp4</div>
+                        <div class="video-size">1920x1080 • 05:30</div>
+                    </div>
+                    <div class="delete-btn">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                </div>
+                <div class="video-options">
+                    <div class="option-tag active">去字幕</div>
+                    <div class="option-tag">去Logo</div>
+                    <div class="option-tag">视频转译</div>
+                    <div class="option-tag">提取字幕</div>
+                    <div class="option-tag">擦除指定区域</div>
+                </div>
+            </div>
+            <div class="video-item">
+                <div class="video-header">
+                    <div class="video-thumbnail"></div>
+                    <div class="video-info">
+                        <div class="video-name">视频2.mp4</div>
+                        <div class="video-size">1280x720 • 03:15</div>
+                    </div>
+                    <div class="delete-btn">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                </div>
+                <div class="video-options">
+                    <div class="option-tag">去字幕</div>
+                    <div class="option-tag active">去Logo</div>
+                    <div class="option-tag">视频转译</div>
+                    <div class="option-tag">提取字幕</div>
+                    <div class="option-tag">擦除指定区域</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 开始处理按钮 -->
+        <div class="start-btn" onclick="window.location.href='history.html'">
+            开始处理
+        </div>
+    </div>
+
+    <script>
+        // 处理视频上传
+        document.querySelector('.upload-area').addEventListener('click', () => {
+            // 模拟上传多个视频
+            const videoList = document.querySelector('.video-list');
+            const videos = [
+                { name: '新视频1.mp4', size: '1920x1080 • 03:45' },
+                { name: '新视频2.mp4', size: '1280x720 • 02:30' },
+                { name: '新视频3.mp4', size: '1920x1080 • 04:15' }
+            ];
+            
+            videos.forEach(video => {
+                const newVideo = document.createElement('div');
+                newVideo.className = 'video-item';
+                newVideo.innerHTML = `
+                    <div class="video-header">
+                        <div class="video-thumbnail"></div>
+                        <div class="video-info">
+                            <div class="video-name">${video.name}</div>
+                            <div class="video-size">${video.size}</div>
+                        </div>
+                        <div class="delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </div>
+                    </div>
+                    <div class="video-options">
+                        <div class="option-tag">去字幕</div>
+                        <div class="option-tag">去Logo</div>
+                        <div class="option-tag">视频转译</div>
+                        <div class="option-tag">提取字幕</div>
+                        <div class="option-tag">擦除指定区域</div>
+                    </div>
+                `;
+                videoList.appendChild(newVideo);
+            });
+        });
+
+        // 处理删除视频
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                btn.closest('.video-item').remove();
+            });
+        });
+
+        // 处理选项标签点击
+        document.querySelectorAll('.option-tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                // 获取当前视频项的所有选项标签
+                const videoOptions = tag.closest('.video-options').querySelectorAll('.option-tag');
+                // 移除所有标签的active类
+                videoOptions.forEach(opt => opt.classList.remove('active'));
+                // 为当前点击的标签添加active类
+                tag.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html> 

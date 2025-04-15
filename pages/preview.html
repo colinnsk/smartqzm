@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一键出片 - 结果预览</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="status-bar">
+        <span>9:41</span>
+        <div>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <i class="fas fa-arrow-left text-xl mr-4"></i>
+            <h1 class="text-2xl font-bold">结果预览</h1>
+        </div>
+
+        <div class="card mb-6">
+            <div class="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg mb-4">
+                <!-- 视频预览区域 -->
+            </div>
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="font-semibold">示例视频.mp4</h3>
+                    <p class="text-sm text-gray-600">2:30 / 45MB</p>
+                </div>
+                <button class="btn-secondary">
+                    <i class="fas fa-play mr-2"></i>
+                    播放
+                </button>
+            </div>
+        </div>
+
+        <div class="card mb-6">
+            <h3 class="font-semibold mb-4">处理结果</h3>
+            <div class="space-y-4">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-3">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium">Logo已去除</p>
+                        <p class="text-sm text-gray-600">成功去除3个Logo</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-3">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium">字幕已翻译</p>
+                        <p class="text-sm text-gray-600">中文 → 英文</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-3">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium">音频已翻译</p>
+                        <p class="text-sm text-gray-600">中文 → 英文</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex space-x-4">
+            <button class="btn-primary flex-1">
+                <i class="fas fa-download mr-2"></i>
+                下载
+            </button>
+            <button class="btn-secondary flex-1">
+                <i class="fas fa-share-alt mr-2"></i>
+                分享
+            </button>
+        </div>
+    </div>
+
+    <div class="tab-bar">
+        <div class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-history"></i>
+            <span>历史</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </div>
+    </div>
+</body>
+</html> 

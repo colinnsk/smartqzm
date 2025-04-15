@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一键出片 - 个人中心</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="status-bar">
+        <span>9:41</span>
+        <div>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold">个人中心</h1>
+            <button class="text-gray-600">
+                <i class="fas fa-cog text-xl"></i>
+            </button>
+        </div>
+
+        <div class="card mb-6">
+            <div class="flex items-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-gray-200 mr-4"></div>
+                <div>
+                    <h3 class="font-semibold">用户名</h3>
+                    <p class="text-sm text-gray-600">普通用户</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                    <p class="text-2xl font-bold">12</p>
+                    <p class="text-sm text-gray-600">处理次数</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold">45</p>
+                    <p class="text-sm text-gray-600">分钟数</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold">¥22.5</p>
+                    <p class="text-sm text-gray-600">总消费</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-6">
+            <h3 class="font-semibold mb-4">会员服务</h3>
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h4 class="font-medium">月度会员</h4>
+                    <p class="text-sm text-gray-600">¥29.9/月</p>
+                </div>
+                <button class="btn-primary">立即开通</button>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h4 class="font-medium">年度会员</h4>
+                    <p class="text-sm text-gray-600">¥299/年</p>
+                </div>
+                <button class="btn-primary">立即开通</button>
+            </div>
+        </div>
+
+        <div class="card mb-6">
+            <div class="space-y-4">
+
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-wallet text-xl mr-3 text-primary"></i>
+                        <span>我的钱包</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-question-circle text-xl mr-3 text-primary"></i>
+                        <span>帮助中心</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-headset text-xl mr-3 text-primary"></i>
+                        <span>联系客服</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-bar">
+        <div class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-history"></i>
+            <span>历史</span>
+        </div>
+        <div class="tab-item active">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </div>
+    </div>
+</body>
+</html> 

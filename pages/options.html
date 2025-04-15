@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一键出片 - 处理选项</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="status-bar">
+        <span>9:41</span>
+        <div>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <i class="fas fa-arrow-left text-xl mr-4"></i>
+            <h1 class="text-2xl font-bold">处理选项</h1>
+        </div>
+
+        <div class="card mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <i class="fas fa-eraser text-xl mr-3 text-primary"></i>
+                    <span>去Logo</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <i class="fas fa-subtitles text-xl mr-3 text-primary"></i>
+                    <span>去字幕</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <i class="fas fa-language text-xl mr-3 text-primary"></i>
+                    <span>字幕翻译</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-sm text-gray-600 mr-2">中文</span>
+                    <i class="fas fa-exchange-alt text-gray-400"></i>
+                    <span class="text-sm text-gray-600 ml-2">英文</span>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-volume-up text-xl mr-3 text-primary"></i>
+                    <span>音频翻译</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="card mb-6">
+            <h3 class="font-semibold mb-4">视频预览</h3>
+            <div class="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg mb-4">
+                <!-- 视频预览区域 -->
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-600">视频时长: 2:30</span>
+                <span class="text-sm text-gray-600">文件大小: 45MB</span>
+            </div>
+        </div>
+
+        <div class="card mb-6">
+            <h3 class="font-semibold mb-4">计费方式</h3>
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h4 class="font-medium">按视频时长</h4>
+                    <p class="text-sm text-gray-600">¥0.5/分钟</p>
+                </div>
+                <label class="switch">
+                    <input type="radio" name="billing" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h4 class="font-medium">订阅会员</h4>
+                    <p class="text-sm text-gray-600">¥29.9/月</p>
+                </div>
+                <label class="switch">
+                    <input type="radio" name="billing">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <button class="btn-primary w-full">开始处理</button>
+    </div>
+
+    <div class="tab-bar">
+        <div class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-history"></i>
+            <span>历史</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </div>
+    </div>
+
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 24px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+</body>
+</html> 
