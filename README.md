@@ -1,1 +1,1 @@
-# smartqzm
+# qzmd
