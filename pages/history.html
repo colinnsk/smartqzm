@@ -343,6 +343,10 @@
                 <div class="play-overlay">
                     <i class="fas fa-play-circle"></i>
                 </div>
+                <div class="expiry-badge">
+                    <i class="fas fa-clock"></i>
+                    <span>剩余 5 天</span>
+                </div>
             </div>
             <div class="video-info">
                 <div class="video-title">视频1.mp4</div>
@@ -382,6 +386,10 @@
                 <img src="https://placehold.co/600x400/4CAF50/FFFFFF?text=视频预览" alt="视频预览">
                 <div class="play-overlay">
                     <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="expiry-badge">
+                    <i class="fas fa-clock"></i>
+                    <span>剩余 2 天</span>
                 </div>
             </div>
             <div class="video-info">
@@ -423,6 +431,10 @@
                 <div class="play-overlay">
                     <i class="fas fa-play-circle"></i>
                 </div>
+                <div class="expiry-badge status-expired">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>已过期</span>
+                </div>
             </div>
             <div class="video-info">
                 <div class="video-title">视频3.mp4</div>
@@ -462,6 +474,10 @@
                 <img src="https://placehold.co/600x400/4CAF50/FFFFFF?text=视频预览" alt="视频预览">
                 <div class="play-overlay">
                     <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="expiry-badge status-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>剩余 1 天</span>
                 </div>
             </div>
             <div class="video-info">
@@ -568,10 +584,19 @@
                 downloadBtn.disabled = true;
                 downloadBtn.classList.remove('bg-yellow-400');
                 downloadBtn.classList.add('bg-gray-300', 'cursor-not-allowed');
+            } else if (days <= 1) {
+                expiryElement.textContent = `剩余 ${days} 天`;
+                expiryElement.classList.remove('text-yellow-500');
+                expiryElement.classList.add('text-orange-500');
+                
+                // 启用下载按钮
+                downloadBtn.disabled = false;
+                downloadBtn.classList.add('bg-yellow-400');
+                downloadBtn.classList.remove('bg-gray-300', 'cursor-not-allowed');
             } else {
                 expiryElement.textContent = `剩余 ${days} 天`;
                 expiryElement.classList.add('text-yellow-500');
-                expiryElement.classList.remove('text-red-500');
+                expiryElement.classList.remove('text-red-500', 'text-orange-500');
                 
                 // 启用下载按钮
                 downloadBtn.disabled = false;

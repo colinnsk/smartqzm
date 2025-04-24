@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频去字幕 - 一键出片</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FFD700;
+            --primary-dark: #E6C200;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            background: rgba(0, 0, 0, 0.8);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 16px;
+            font-size: 14px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            color: white;
+            z-index: 101;
+        }
+        
+        .video-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 60px;
+            width: 100%;
+        }
+        
+        .video-frame {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            position: relative;
+        }
+        
+        .controls {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 20px;
+            z-index: 10;
+        }
+        
+        .time-display {
+            color: white;
+            font-size: 12px;
+            margin: 0 10px;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            margin: 0 10px;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 2px;
+            width: 10%;
+        }
+        
+        .progress-thumb {
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .selection-area {
+            position: absolute;
+            border: 3px dashed var(--primary-color);
+            background: rgba(255, 215, 0, 0.15);
+            pointer-events: all;
+            cursor: move;
+            z-index: 5;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+            }
+        }
+        
+        .selection-handle {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: var(--primary-color);
+            border: 2px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 6;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .selection-handle.nw {
+            top: 0;
+            left: 0;
+            cursor: nw-resize;
+        }
+        
+        .selection-handle.ne {
+            top: 0;
+            right: 0;
+            transform: translate(50%, -50%);
+            cursor: ne-resize;
+        }
+        
+        .selection-handle.sw {
+            bottom: 0;
+            left: 0;
+            transform: translate(-50%, 50%);
+            cursor: sw-resize;
+        }
+        
+        .selection-handle.se {
+            bottom: 0;
+            right: 0;
+            transform: translate(50%, 50%);
+            cursor: se-resize;
+        }
+        
+        .outline-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 4;
+        }
+        
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: #333;
+            border: none;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .tools {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 12px 6px;
+            border-radius: 30px;
+            z-index: 10;
+        }
+        
+        .tool-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tool-btn:hover, .tool-btn.active {
+            background: var(--primary-color);
+            color: #333;
+        }
+        
+        .zoom-controls {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 12px 6px;
+            border-radius: 30px;
+            z-index: 10;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: all;
+            cursor: crosshair;
+            z-index: 3;
+        }
+        
+        .page-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 16px;
+            font-size: 18px;
+        }
+        
+        .subtitle-text {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.8);
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            z-index: 2;
+        }
+        
+        .guidance-message {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            z-index: 10;
+            max-width: 80%;
+            animation: fadeOut 5s forwards;
+            animation-delay: 5s;
+            border: 1px solid var(--primary-color);
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <span>10:46</span>
+        <div>
+            <i class="fas fa-bluetooth"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <div class="header">
+        <a href="processing.html">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="page-title">视频去字幕</div>
+        <div class="header-icons">
+            <i class="fas fa-ellipsis-h"></i>
+            <i class="fas fa-circle"></i>
+        </div>
+    </div>
+
+    <div class="video-container">
+        <video class="video-frame" id="video-frame" poster="https://placehold.co/800x450/333/666?text=视频示例" controls>
+            <source src="/uiux/50_1745462926.mp4" type="video/mp4">
+            您的浏览器不支持视频播放
+        </video>
+        
+        <div class="subtitle-text" id="subtitle-text">村里的老人告诉他</div>
+        
+        <div class="guidance-message">
+            <i class="fas fa-info-circle mr-2"></i> 请调整黄色框选区域，使其完全覆盖视频中的字幕
+        </div>
+        
+        <div class="selection-area" id="selection-area" style="top: 69%; left: 20%; width: 60%; height: 10%;">
+            <div class="selection-handle nw" id="handle-nw"></div>
+            <div class="selection-handle ne" id="handle-ne"></div>
+            <div class="selection-handle sw" id="handle-sw"></div>
+            <div class="selection-handle se" id="handle-se"></div>
+        </div>
+        
+        <div class="video-overlay" id="video-overlay"></div>
+        
+        <div class="tools">
+            <div class="tool-btn active">
+                <i class="fas fa-vector-square"></i>
+            </div>
+            <div class="tool-btn">
+                <i class="fas fa-eraser"></i>
+            </div>
+            <div class="tool-btn">
+                <i class="fas fa-magic"></i>
+            </div>
+        </div>
+        
+        <div class="zoom-controls">
+            <div class="tool-btn">
+                <i class="fas fa-expand"></i>
+            </div>
+            <div class="tool-btn">
+                <i class="fas fa-search-plus"></i>
+            </div>
+            <div class="tool-btn">
+                <i class="fas fa-search-minus"></i>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="time-display">00:04</div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+                <div class="progress-thumb"></div>
+            </div>
+            <div class="time-display">00:56</div>
+        </div>
+    </div>
+    
+    <div class="bottom-bar">
+        <button class="btn btn-outline">重选区域</button>
+        <button class="btn btn-primary" onclick="window.location.href='preview.html'">提交去字幕</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set video source
+            const videoFrame = document.getElementById('video-frame');
+            
+            // Variables to track selection area
+            const selectionArea = document.getElementById('selection-area');
+            const handles = {
+                nw: document.getElementById('handle-nw'),
+                ne: document.getElementById('handle-ne'),
+                sw: document.getElementById('handle-sw'),
+                se: document.getElementById('handle-se')
+            };
+            
+            const videoOverlay = document.getElementById('video-overlay');
+            
+            // Variables for tracking mouse position and drag state
+            let isDragging = false;
+            let activeHandle = null;
+            let startX, startY;
+            let startLeft, startTop, startWidth, startHeight;
+            
+            // Initialize selection area to be centered on the subtitle text
+            const subtitleText = document.getElementById('subtitle-text');
+            setTimeout(positionSelectionAreaOverSubtitle, 300); // Slight delay to ensure elements are rendered
+            
+            function positionSelectionAreaOverSubtitle() {
+                const videoFrame = document.getElementById('video-frame');
+                
+                // Position the selection area right over the subtitle
+                const subtitleRect = subtitleText.getBoundingClientRect();
+                const videoRect = videoFrame.getBoundingClientRect();
+                
+                // Calculate position relative to video frame
+                const top = (subtitleRect.top - videoRect.top + subtitleRect.height / 2) / videoRect.height * 100;
+                const left = (subtitleRect.left - videoRect.left) / videoRect.width * 100;
+                const width = subtitleRect.width / videoRect.width * 100;
+                const height = subtitleRect.height / videoRect.height * 100;
+                
+                selectionArea.style.top = `${top}%`;
+                selectionArea.style.left = `${left}%`;
+                selectionArea.style.width = `${width}%`;
+                selectionArea.style.height = `${height}%`;
+            }
+            
+            // Handle drag start for selection area
+            selectionArea.addEventListener('mousedown', function(e) {
+                if (e.target === selectionArea) {
+                    isDragging = true;
+                    activeHandle = null;
+                    
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    startLeft = parseFloat(selectionArea.style.left) || 0;
+                    startTop = parseFloat(selectionArea.style.top) || 0;
+                    
+                    e.preventDefault();
+                }
+            });
+            
+            // Handle drag start for resize handles
+            for (const position in handles) {
+                handles[position].addEventListener('mousedown', function(e) {
+                    isDragging = true;
+                    activeHandle = position;
+                    
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    startLeft = parseFloat(selectionArea.style.left) || 0;
+                    startTop = parseFloat(selectionArea.style.top) || 0;
+                    startWidth = parseFloat(selectionArea.style.width) || 0;
+                    startHeight = parseFloat(selectionArea.style.height) || 0;
+                    
+                    e.preventDefault();
+                });
+            }
+            
+            // Handle drag motion and resize
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                
+                const videoRect = document.getElementById('video-frame').getBoundingClientRect();
+                const dx = (e.clientX - startX) / videoRect.width * 100;
+                const dy = (e.clientY - startY) / videoRect.height * 100;
+                
+                if (activeHandle === null) {
+                    // Moving the entire selection area
+                    let newLeft = startLeft + dx;
+                    let newTop = startTop + dy;
+                    
+                    // Constrain to video boundaries
+                    newLeft = Math.max(0, Math.min(100 - parseFloat(selectionArea.style.width), newLeft));
+                    newTop = Math.max(0, Math.min(100 - parseFloat(selectionArea.style.height), newTop));
+                    
+                    selectionArea.style.left = `${newLeft}%`;
+                    selectionArea.style.top = `${newTop}%`;
+                } else {
+                    // Resizing the selection area
+                    let newLeft = startLeft;
+                    let newTop = startTop;
+                    let newWidth = startWidth;
+                    let newHeight = startHeight;
+                    
+                    if (activeHandle.includes('n')) {
+                        newTop = startTop + dy;
+                        newHeight = startHeight - dy;
+                    }
+                    if (activeHandle.includes('s')) {
+                        newHeight = startHeight + dy;
+                    }
+                    if (activeHandle.includes('w')) {
+                        newLeft = startLeft + dx;
+                        newWidth = startWidth - dx;
+                    }
+                    if (activeHandle.includes('e')) {
+                        newWidth = startWidth + dx;
+                    }
+                    
+                    // Ensure minimum size and within bounds
+                    if (newWidth >= 5 && newHeight >= 5) {
+                        selectionArea.style.left = `${newLeft}%`;
+                        selectionArea.style.top = `${newTop}%`;
+                        selectionArea.style.width = `${newWidth}%`;
+                        selectionArea.style.height = `${newHeight}%`;
+                    }
+                }
+            });
+            
+            // Handle drag end
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+                activeHandle = null;
+            });
+            
+            // Create a new selection area by clicking and dragging on the video
+            videoOverlay.addEventListener('mousedown', function(e) {
+                // Only if not already dragging a handle or the selection area
+                if (!isDragging) {
+                    const videoRect = document.getElementById('video-frame').getBoundingClientRect();
+                    const x = (e.clientX - videoRect.left) / videoRect.width * 100;
+                    const y = (e.clientY - videoRect.top) / videoRect.height * 100;
+                    
+                    // Start a new selection
+                    selectionArea.style.left = `${x}%`;
+                    selectionArea.style.top = `${y}%`;
+                    selectionArea.style.width = '0';
+                    selectionArea.style.height = '0';
+                    
+                    isDragging = true;
+                    activeHandle = 'se'; // Simulate dragging the bottom-right handle
+                    
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    startLeft = x;
+                    startTop = y;
+                    startWidth = 0;
+                    startHeight = 0;
+                }
+            });
+            
+            // Tool button click handling
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一键出片 - 功能演示</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FFD700;
+            --primary-dark: #E6C200;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --bg-light: #f5f5f7;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .app-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFC400 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        .app-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        
+        .feature-section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 12px;
+            color: var(--primary-color);
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .card-header {
+            background: #f8f8f8;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .card-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .card-btn-primary {
+            background: var(--primary-color);
+            color: var(--text-primary);
+        }
+        
+        .card-btn-outline {
+            border: 1px solid #ddd;
+            color: var(--text-secondary);
+        }
+        
+        .card-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .card-content {
+            padding: 0;
+            position: relative;
+        }
+        
+        .device-frame {
+            width: 100%;
+            height: auto;
+            background: white;
+            border-radius: 0 0 16px 16px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .device-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .device-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 80%, rgba(0,0,0,0.1) 100%);
+            pointer-events: none;
+            border-radius: 0 0 16px 16px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-item {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            background: var(--bg-light);
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+        
+        .feature-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .feature-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .marquee-section {
+            width: 100%;
+            overflow: hidden;
+            margin: 50px 0;
+            padding: 20px 0;
+            background: #f0f0f0;
+        }
+        
+        .marquee-content {
+            display: flex;
+            animation: marquee 40s linear infinite;
+            white-space: nowrap;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .marquee-item {
+            flex: 0 0 auto;
+            margin: 0 30px;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .marquee-item i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .subtitle-demo {
+            position: relative;
+            border: 3px solid var(--primary-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .demo-highlight {
+            position: absolute;
+            border: 3px dashed #4285F4;
+            background: rgba(66, 133, 244, 0.2);
+            z-index: 2;
+        }
+        
+        .screen-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 5;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="app-title">一键出片</h1>
+            <p class="app-subtitle">AI视频处理，让创作更轻松</p>
+            <p class="mb-6">通过高级AI技术，自动处理视频，实现字幕擦除、水印擦除、Logo擦除等功能</p>
+            <div>
+                <a href="home.html" class="inline-block bg-yellow-400 text-gray-900 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition">
+                    进入应用
+                </a>
+            </div>
+        </div>
+        
+        <div class="feature-section">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i>
+                功能亮点
+            </h2>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-closed-captioning"></i>
+                    </div>
+                    <h3 class="feature-name">字幕擦除</h3>
+                    <p class="feature-desc">智能识别并擦除视频中的字幕，完美修复背景，无痕处理。支持自定义选择字幕区域，精准定位。</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-tint-slash"></i>
+                    </div>
+                    <h3 class="feature-name">水印擦除</h3>
+                    <p class="feature-desc">彻底清除视频角落或中央的水印标记，AI智能修复背景，保持视频质量不受影响。</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3 class="feature-name">字幕翻译</h3>
+                    <p class="feature-desc">自动识别视频原有字幕，翻译成目标语言，并以相同的风格替换，支持多种语言互译。</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3 class="feature-name">语音识别</h3>
+                    <p class="feature-desc">将视频中的语音内容转换为文字，支持多种语言，精准识别各种音频环境下的语音。</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-eraser"></i>
+                    </div>
+                    <h3 class="feature-name">Logo擦除</h3>
+                    <p class="feature-desc">一键去除视频中的品牌Logo，不留痕迹，为二次创作和内容分发提供便利。</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 class="feature-name">更多功能</h3>
+                    <p class="feature-desc">持续推出新功能，包括画质提升、视频修复、智能剪辑等，让创作者获得更多创作可能。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="marquee-section">
+            <div class="marquee-content">
+                <div class="marquee-item"><i class="fas fa-check-circle"></i> 高精度字幕擦除</div>
+                <div class="marquee-item"><i class="fas fa-check-circle"></i> 多语言翻译支持</div>
+                <div class="marquee-item"><i class="fas fa-check-circle"></i> AI智能修复</div>
+                <div class="marquee-item"><i class="fas fa-check-circle"></i> 简单易用的操作界面</div>
+                <div class="marquee-item"><i class="fas fa-check-circle"></i> 高质量视频输出</div>
+                <div class="marquee-item"><i class="fas fa-check-circle"></i> 批量处理功能</div>
+                <div class="marquee-item"><i class="fas fa-check-circle"></i> 专业级修复效果</div>
+                <div class="marquee-item"><i class="fas fa-check-circle"></i> 多设备支持</div>
+            </div>
+        </div>
+        
+        <div class="feature-section">
+            <h2 class="section-title">
+                <i class="fas fa-highlighter"></i>
+                字幕擦除功能展示
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="demo-card">
+                    <div class="card-header">
+                        <h3 class="card-title">步骤1: 选择字幕区域</h3>
+                        <div class="card-actions">
+                            <a href="remove_subtitle.html" class="card-btn card-btn-primary">体验</a>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="device-frame subtitle-demo">
+                            <img src="https://placehold.co/800x450/111/333?text=" alt="字幕擦除演示" class="w-full">
+                            <div class="demo-highlight" style="bottom: 22%; left: 20%; width: 60%; height: 10%;"></div>
+                            <div class="device-overlay"></div>
+                            <div class="screen-indicator">
+                                <i class="fas fa-vector-square"></i> 选择区域
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="card-header">
+                        <h3 class="card-title">步骤2: 处理效果预览</h3>
+                        <div class="card-actions">
+                            <a href="preview.html" class="card-btn card-btn-primary">体验</a>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="device-frame">
+                            <img src="https://placehold.co/800x450/111/333?text=" alt="处理效果预览" class="w-full">
+                            <div class="device-overlay"></div>
+                            <div class="screen-indicator">
+                                <i class="fas fa-eye"></i> 预览效果
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-md">
+                <h3 class="text-xl font-bold mb-4">操作流程</h3>
+                <ol class="list-decimal pl-6 space-y-3">
+                    <li class="text-gray-700">在视频处理页面选择需要处理的视频</li>
+                    <li class="text-gray-700">选择"去字幕"功能</li>
+                    <li class="text-gray-700">使用框选工具定位字幕区域，可以拖拽和调整大小</li>
+                    <li class="text-gray-700">点击"提交去字幕"按钮，系统将自动处理</li>
+                    <li class="text-gray-700">处理完成后，可以预览效果，对比处理前后的差异</li>
+                    <li class="text-gray-700">满意后即可下载处理完成的视频</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="feature-section">
+            <h2 class="section-title">
+                <i class="fas fa-mobile-alt"></i>
+                应用界面预览
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="demo-card">
+                    <div class="card-header">
+                        <h3 class="card-title">首页</h3>
+                        <div class="card-actions">
+                            <a href="home.html" class="card-btn card-btn-outline">查看</a>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="device-frame">
+                            <img src="https://via.placeholder.com/360x720/f5f5f7/666666?text=首页" alt="首页预览" class="w-full">
+                            <div class="device-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="card-header">
+                        <h3 class="card-title">视频处理</h3>
+                        <div class="card-actions">
+                            <a href="processing.html" class="card-btn card-btn-outline">查看</a>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="device-frame">
+                            <img src="https://via.placeholder.com/360x720/f5f5f7/666666?text=视频处理" alt="视频处理预览" class="w-full">
+                            <div class="device-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="card-header">
+                        <h3 class="card-title">历史记录</h3>
+                        <div class="card-actions">
+                            <a href="history.html" class="card-btn card-btn-outline">查看</a>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="device-frame">
+                            <img src="https://via.placeholder.com/360x720/f5f5f7/666666?text=历史记录" alt="历史记录预览" class="w-full">
+                            <div class="device-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 一键出片 - AI视频处理工具. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Clone the marquee content for continuous scrolling
+            const marqueeContent = document.querySelector('.marquee-content');
+            marqueeContent.innerHTML += marqueeContent.innerHTML;
+            
+            // Update images with actual video thumbnails - simulate video thumbnails similar to processing.html
+            const videoThumbnail1 = 'https://placehold.co/360x200/222222/FFD700?text=示例视频1';
+            const videoThumbnail2 = 'https://placehold.co/360x200/222222/FFD700?text=示例视频2';
+            const videoThumbnail3 = 'https://placehold.co/360x200/222222/FFD700?text=示例视频3';
+            
+            // Update the subtitle demo with more realistic examples
+            const subtitleDemo = document.querySelector('.subtitle-demo');
+            if (subtitleDemo) {
+                subtitleDemo.innerHTML = `
+                    <img src="${videoThumbnail1}" alt="字幕擦除演示" class="w-full">
+                    <div class="demo-highlight" style="bottom: 15%; left: 10%; width: 80%; height: 15%; border: 2px dashed #FFD700; background: rgba(255, 215, 0, 0.2);"></div>
+                    <div class="device-overlay"></div>
+                    <div class="screen-indicator">
+                        <i class="fas fa-vector-square"></i> 选择字幕区域
+                    </div>
+                `;
+            }
+            
+            // Update the preview image with processed result
+            const previewFrame = document.querySelectorAll('.device-frame')[1];
+            if (previewFrame) {
+                previewFrame.innerHTML = `
+                    <img src="${videoThumbnail1}" alt="处理效果预览" class="w-full opacity-50">
+                    <div style="position: absolute; top: 50%; left: 0; width: 100%; text-align: center; transform: translateY(-50%);">
+                        <div class="bg-yellow-400 text-gray-900 inline-block px-4 py-2 rounded-lg shadow-lg">
+                            <i class="fas fa-magic mr-2"></i>字幕已擦除
+                        </div>
+                    </div>
+                    <div class="device-overlay"></div>
+                    <div class="screen-indicator">
+                        <i class="fas fa-eye"></i> 预览效果
+                    </div>
+                `;
+            }
+            
+            // Update application screenshots
+            const homeFrame = document.querySelectorAll('.device-frame')[2];
+            const processingFrame = document.querySelectorAll('.device-frame')[3];
+            const historyFrame = document.querySelectorAll('.device-frame')[4];
+            
+            if (homeFrame) {
+                homeFrame.querySelector('img').src = 'https://placehold.co/360x720/f5f5f7/333333?text=首页';
+            }
+            
+            if (processingFrame) {
+                processingFrame.querySelector('img').src = 'https://placehold.co/360x720/f5f5f7/333333?text=批量处理';
+                processingFrame.innerHTML += `
+                    <div style="position: absolute; top: 30%; left: 0; width: 100%; padding: 0 20px;">
+                        <div class="bg-white rounded-lg shadow-md p-3 mb-3">
+                            <div class="flex items-center">
+                                <div class="w-16 h-16 bg-gray-200 rounded-md mr-3 flex-shrink-0" style="background: url(${videoThumbnail2}) center/cover;"></div>
+                                <div class="text-left">
+                                    <p class="font-semibold text-sm">视频名称.mp4</p>
+                                    <p class="text-xs text-gray-500">35.2MB</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md p-3">
+                            <div class="flex items-center">
+                                <div class="w-16 h-16 bg-gray-200 rounded-md mr-3 flex-shrink-0" style="background: url(${videoThumbnail3}) center/cover;"></div>
+                                <div class="text-left">
+                                    <p class="font-semibold text-sm">视频2.mp4</p>
+                                    <p class="text-xs text-gray-500">28.7MB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (historyFrame) {
+                historyFrame.querySelector('img').src = 'https://placehold.co/360x720/f5f5f7/333333?text=历史记录';
+                historyFrame.innerHTML += `
+                    <div style="position: absolute; top: 30%; left: 0; width: 100%; padding: 0 20px;">
+                        <div class="bg-white rounded-lg shadow-md p-3 mb-3">
+                            <div class="flex items-center">
+                                <div class="w-16 h-16 bg-gray-200 rounded-md mr-3 flex-shrink-0" style="background: url(${videoThumbnail1}) center/cover;"></div>
+                                <div class="text-left">
+                                    <p class="font-semibold text-sm">已处理_视频名称.mp4</p>
+                                    <p class="text-xs text-gray-500">已完成 · 36.1MB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html> 
